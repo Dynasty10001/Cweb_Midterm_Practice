@@ -1,0 +1,158 @@
+<div class="p-5 mb-4 bg-gradient rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">{{title}}</h1>
+        <h2> The app helps keep track of neighbourhood pets </h2>
+        <h2> READ the README.md for VERY IMPORTANT instructions for Bitbucket </h2>
+    </div>
+</div>
+<!--//setup-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Set Up </h2>
+    <ol>
+        <li> <a class="btn btn-primary" href="/?initDB=1" role="button">Initialize / Reset the database</a></li>
+        <li> Open and review registry.js router. Some code is already provided </li>
+        <li> Add the router to app.js with the path '/pets' [1 mark] </li>
+    </ol>
+
+    <h2>General Marks:</h2>
+    <ol>
+        <li> Code maturity :  [5 marks]</li>
+        <li> Web App runs and is complete :  [5 marks]</li>
+    </ol>
+</div>
+
+<!--//login-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Login</h2>
+    <h3> Most of the login logic is done for you - Look in the registry.js for the login handlers and passport configuration</h3>
+    registry.js
+    <ol>
+        <li> Add options to the Local Strategy for the names of the login form inputs [1 mark]
+            (<a target="_blank" href="https://www.passportjs.org/docs/username-password/#parameters">Passport Username and Password</a>)
+        </li>
+        <li> In the Login POST handler passport.authenticate add options for: [2 marks]
+            <br>the success redirect to the 'pets-add' page and
+            <br>failure redirects to login with the err query string parameter
+            (<a target="_blank" href="https://www.passportjs.org/docs/authenticate/#redirects">Passport Redirects</a>)
+        </li>
+        <li> In the GET login handler: if a cookie exists for the owners name send the value to the handlebars template [1 mark] </li>
+        <li> In the POST login handler: If the user activates 'Remember me for next time' then set a cookie that last 30 days with the value of the posted ownername [3 marks]</li>
+    </ol>
+    Owners database table data
+    <pre>
+id, ownername, password, role
+1,  Sally,     234abcd, admin
+2,  Bob,       678efgh, owner
+3,  Darren,    012ijkl, owner
+4,  Gwen,      456mnop, owner
+    </pre>
+</div>
+
+<!--//pet list-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Pet List</h2>
+    <h3>In pets-list.hbs create an
+        <a target="_blank" href="https://getbootstrap.com/docs/5.0/content/tables/">Bootstrap 5 formatted table</a>
+        of all the pets in the database
+    </h3>
+    <ol>
+        <li> The GET handler is already coded in the registry.js - you only need to edit the pets-list.hbs file  </li>
+        <li>The Bootstrap table MUST have the following column headings: [3 marks]
+            <ul>
+                <li> Pet Name - links to ?sortby=petname </li>
+                <li> Pet Type - links to ?sortby=pettype </li>
+                <li> License - links to ?sortby=license </li>
+                <li> Owner Name - links to ?sortby=ownername </li>
+            </ul>
+        </li>
+        <li>Clicking in the headings will reload the page AND send the 'sortby' query string parameter in the url [2 marks] </li>
+        <li>Display 1 pet per table row. Each pet object will have the following attributes: [3 marks]
+            <ul>
+                <li> petname </li>
+                <li> pettype </li>
+                <li> license </li>
+                <li> ownername </li>
+                <li> petimage - DO NOT DISPLAY the petimage in the table - you will display it in pets view section </li>
+            </ul>
+        </li>
+        <li>The pet's license must be link to the pets view page - you MUST also send the 'license' query string parameter in the link [2 marks] </li>
+    </ol>
+</div>
+
+<!--//pet view-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Pets View</h2>
+    <h3>In pets-view.hbs: </h3>
+    <ol>
+        <li>Review the GET handler for '/view' in  registry.js - you only need to edit the pets-view.hbs file  </li>
+        <li>if the 'license' is passed in the query string,
+            Display all information about the pet:  license, ownername, petname, pettype, petimage [2 marks]</li>
+        <li>petimage contains the name of a file in the public/images folder - you MUST display the image
+            <a target="_blank" href="https://www.w3schools.com/tags/tag_img.asp"> using an img tag</a> [3 marks] </li>
+        <li>if license is not passed or is not found then display 'Pet Not Found' message [1 mark]</li>
+        <li>Display a list pet names from the session [1 mark]</li>
+        <li>The pet name should be in a link to pet view [to this page] that sends the 'license' query string parameter
+            <br/>- clicking the pet name will display the pet's information</li>
+    </ol>
+</div>
+
+<!--// pet add-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Pets Add </h2>
+    <h3> This page will use s form to submit a new pet's information and optionally upload an image file</h3>
+    pets-add.hbs:
+    <ol>
+        <li> Add form inputs for  license, petname, pettype, petimage, ownername [5 marks]</li>
+        <li> petimage is a file input , but it is optional to upload a file</li>
+        <li> all other fields are required </li>
+        <li> You will need to show any form error messages using
+            <a target="_blank" href="https://getbootstrap.com/docs/5.0/forms/validation/#server-side">bootstrap validation styles</a>
+            [2 marks]</li>
+    </ol>
+    registry.js:
+    <ol>
+        <li> Add a working GET handler for pets add [2 marks] </li>
+        <li> Add a working POST handler for pets add [2 marks]</li>
+        <li> In the post handler add
+            <a target="_blank" href="https://github.com/validatorjs/validator.js#validators">>
+                express-validators </a> for the following: [6 marks]
+            <ul>
+                <li> license - must be 8 digits </li>
+                <li> petname && ownername - must not me empty (trimmed) and max 50 characters </li>
+                <li> pettype -  must not me empty (trimmed) and max 25 characters </li>
+                <li> petimage - is optional but if uploaded must be a PNG file (no other image formats) and max 2MB in size </li>
+            </ul>
+        </li>
+        <li> if any are fields are invalid display the error messages (delete the file if uploaded
+            <a target="_blank" href="https://nodejs.org/api/fs.html#fs_fs_unlinksync_path">fs.unlinkSync</a>) [2 marks] </li>
+        <li> if all fields are valid:
+            <ul>
+                <li>if an image was uploaded, move
+                    (<a target="_blank" href="https://nodejs.org/api/fs.html#fs_fs_renamesync_oldpath_newpath">fs.renameSync</a>)
+                    the uploaded file to the /public/images/ folder AND add '.png' to the end of the <b>filename</b></li>
+                <li>Next you need to save the pet information to the database:
+                    <code><pre>
+                    const pet = req.body;
+                    pet.petimage = 'DO-NOT-REMOVE-no-image.png';
+                    db.prepare(`insert into pets (license,ownername,petimage,petname,pettype)
+                    values (:license,:ownername,:petimage,:petname,:pettype)`)
+                    .run(pet);
+                </pre></code>
+                </li>
+                <li>BONUS 2 marks: figure out how to save the uploaded filename into the database</li>
+                <li> add the pet to an array in the session - so you can display recently added pets in pets view [2 marks] </li>
+                <li>redirect to pets view with the 'licence' query string parameter in the url [2 mark]</li>
+            </ul>
+        </li>
+
+        After Completing pet login:
+        <ol>
+            <li> In the GET and POST handlers for pets add - check if req.authenticatedUser is exists or redirect to pets login [2 marks] </li>
+            <li> If the authenticatedUser has a role of admin - display the ownername input [2 marks] </li>
+            <li> otherwise - render a hidden input for ownername with the value of authenticated user's owenername property [2 marks]</li>
+        </ol>
+
+    </ol>
+</div>
+
+</div>

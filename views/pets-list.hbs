@@ -1,0 +1,35 @@
+<div class="card p-2 bg-gradient">
+    <h1>{{ title }}</h1>
+    <!-- TODO: add a bootstrap 5 formatted table  -->
+
+</div>
+<!--you can delete the div below-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Pet List</h2>
+    <h3>In pets-list.hbs create an
+        <a target="_blank" href="https://getbootstrap.com/docs/5.0/content/tables/">Bootstrap 5 formatted table</a>
+        of all the pets in the database
+    </h3>
+    <ol>
+        <li> The GET handler is already coded in the registry.js - you only need to edit the pets-list.hbs file  </li>
+        <li>The Bootstrap table MUST have the following column headings: [3 marks]
+            <ul>
+                <li> Pet Name - links to ?sortby=petname </li>
+                <li> Pet Type - links to ?sortby=pettype </li>
+                <li> License - links to ?sortby=license </li>
+                <li> Owner Name - links to ?sortby=ownername </li>
+            </ul>
+        </li>
+        <li>Clicking in the headings will reload the page AND send the 'sortby' query string parameter in the url [2 marks] </li>
+        <li>Display 1 pet per table row. Each pet object will have the following attributes: [3 marks]
+            <ul>
+                <li> petname </li>
+                <li> pettype </li>
+                <li> license </li>
+                <li> ownername </li>
+                <li> petimage - DO NOT DISPLAY the petimage in the table - you will display it in pets view section </li>
+            </ul>
+        </li>
+        <li>The pet's license must be link to the pets view page - you MUST also send the 'license' query string parameter in the link [2 marks] </li>
+    </ol>
+</div>

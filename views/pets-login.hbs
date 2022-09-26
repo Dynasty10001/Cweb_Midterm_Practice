@@ -1,0 +1,50 @@
+<!-- NO Changes NEEDED IN THIS FILE -->
+<form action="{{action}}" method="post" class="bg-secondary">
+    <h1>{{ title }}</h1>
+    {{#if authError}}<h2 class="text-danger">{{authError}}</h2>{{/if}}
+    <div class="mb-2">
+        <label for="owner" class="form-label">Owner:</label>
+        <input type="text" class="form-control {{#if err.owner}}is-invalid{{/if}}" value="{{rememberedOwner}}"
+               placeholder="Enter owner name" name="owner" id="owner" value="{{postedValues.owner}}" required />
+        <div class="invalid-feedback">{{err.owner}}</div>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="remember" name="remember" value="1"
+               {{#if postedValues.remember}}checked{{/if}}>
+        <label class="form-check-label" for="remember">Remember me for next time</label>
+    </div>
+    <div class="mb-2">
+        <label for="password" class="form-label">Password:</label>
+        <input type="text" class="form-control {{#if err.password}}is-invalid{{/if}}"
+               placeholder="Enter password" name="password" id="password"  value="{{postedValues.password}}" required/>
+        <div class="invalid-feedback">{{err.password}}</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<!--you can delete the div below-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Login</h2>
+    <h3> Most of the login logic is done for you - Look in the registry.js for the login handlers and passport configuration</h3>
+    registry.js
+    <ol>
+        <li> Add options to the Local Strategy for the names of the login form inputs [1 mark]
+            (<a target="_blank" href="https://www.passportjs.org/docs/username-password/#parameters">Passport Username and Password</a>)
+        </li>
+        <li> In the Login POST handler passport.authenticate add options for: [2 marks]
+            <br>the success redirect to the 'pets-add' page and
+            <br>failure redirects to login with the err query string parameter
+            (<a target="_blank" href="https://www.passportjs.org/docs/authenticate/#redirects">Passport Redirects</a>)
+        </li>
+        <li> In the GET login handler: if a cookie exists for the owners name send the value to the handlebars template [1 mark] </li>
+        <li> In the POST login handler: If the user activates 'Remember me for next time' then set a cookie that last 30 days with the value of the posted ownername [3 marks]</li>
+    </ol>
+    Owners database table data
+    <pre>
+id, ownername, password, role
+1,  Sally,     234abcd, admin
+2,  Bob,       678efgh, owner
+3,  Darren,    012ijkl, owner
+4,  Gwen,      456mnop, owner
+    </pre>
+</div>

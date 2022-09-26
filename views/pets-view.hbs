@@ -1,0 +1,27 @@
+<div class="bg-gradient card p-2">
+    <h1>{{title}}</h1>
+<!--display the pet information-->
+</div>
+
+<h2 class="text-danger">Pet Not Found</h2>
+
+<div class="bg-gradient card p-2">
+    <h2> Recently Added Pets</h2>
+    <!-- Display the pet names from the session in a link to this page that sends the 'licence' in the query string  -->
+</div>
+<!--you can delete the div below-->
+<div class="card p-2 mt-2 bg-dark">
+    <h2>Pets View</h2>
+    <h3>In pets-view.hbs: </h3>
+    <ol>
+        <li>Review the GET handler for '/view' in  registry.js - you only need to edit the pets-view.hbs file  </li>
+        <li>if the 'license' is passed in the query string,
+            Display all information about the pet:  license, ownername, petname, pettype, petimage [2 marks]</li>
+        <li>petimage contains the name of a file in the public/images folder - you MUST display the image
+            <a target="_blank" href="https://www.w3schools.com/tags/tag_img.asp"> using an img tag</a> [3 marks] </li>
+        <li>if license is not passed or is not found then display 'Pet Not Found' message [1 mark]</li>
+        <li>Display a list pet names from the session [1 mark]</li>
+        <li>The pet name should be in a link to pet view [to this page] that sends the 'license' query string parameter
+            <br/>- clicking the pet name will display the pet's information</li>
+    </ol>
+</div>
