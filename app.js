@@ -32,7 +32,7 @@ const sessOptions = {
 
 
 const indexRouter = require('./routes/index');
-const petsRouter = require('./pets');
+const petsRouter = require('./routes/registry');
 // TODO: add the registry router
 
 
@@ -59,6 +59,7 @@ app.use('/bw', express.static( 'node_modules/bootswatch/dist'));
 app.use('/bs', express.static( 'node_modules/bootstrap/dist'));
 
 app.use('/', indexRouter);
+app.use('/pets', petsRouter);
 // TODO: add the path for the registry router
 
 

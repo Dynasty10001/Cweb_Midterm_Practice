@@ -33,3 +33,20 @@
         <li>The pet's license must be link to the pets view page - you MUST also send the 'license' query string parameter in the link [2 marks] </li>
     </ol>
 </div>
+<div>
+
+    <table class="table">
+    <thead>
+    <tr>
+        <th><a href="?sortby=petname">Pet Name</a></th><th><a href="?sortby=pettype">Pet Type</a></th><th><a href="?sortby=license">License</a></th><th><a href="?sortby=ownername">Owner Name</a></th>
+    </tr>
+    </thead>
+        <tbody>
+        {{#each pets}}
+            <tr>
+                <td>{{this.petname}}</td><td>{{this.pettype}}</td><td><a href="/pets/view?license={{this.license}}">{{this.license}}</a></td><td>{{this.ownername}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
