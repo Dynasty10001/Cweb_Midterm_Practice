@@ -152,6 +152,7 @@ router.post('/add', upload.fields([{name: 'petimage', maxCount: 1}]), [
   body('license').trim().notEmpty().withMessage('License number is required').bail(),
   body('license').trim().isNumeric().isLength({min: 8, max: 8}).withMessage('License must be 8 digits long').bail(),
   body('petname').trim().notEmpty().withMessage('Pet Name is required').bail(),
+  body('petname').trim().isLength({max: 50}).withMessage('Pet Name is required').bail(),
   body('pettype').trim().notEmpty().withMessage('Pet Type is required').bail(),
   body('ownername').trim().notEmpty().withMessage('Owner Name is required').bail(),
   body('petimage').custom((value, {req}) => {
@@ -167,6 +168,15 @@ router.post('/add', upload.fields([{name: 'petimage', maxCount: 1}]), [
 
   // format the violations into a very simple object with properties
   const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
+  if (errorMessages.petimage) {
+    fs.unlink(req.files.petimage.path, (err)=> {
+      if (err) throw err;
+      console.log('File removed at ' + req.files.petimage.path);
+    });
+  } else {
+    moveFile(req.files.petimage, __dirname + '/../public/images/');
+  }
+
   res.render('pets-add', {
     title: 'POST - Add-a-Pet',
     submittedPetName: req.body.petname,
