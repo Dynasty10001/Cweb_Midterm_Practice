@@ -6,6 +6,36 @@ const db = require('better-sqlite3')('registry.db', {verbose: console.log});
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
+const multer = require('multer');
+const upload = multer({
+  dest: 'public/uploads/',
+  limits: {filesize: 10*1024*1024}, // superb good way to prevent malicious attacks
+  fileFilter: (req, file, callback)=>{
+    if (file.mimetype.startsWith('image/')) {
+      return callback(null, true); // file mimetype is allowed
+    } else {
+      return callback(new Error('Only images are allowed, JACKASS'));
+    }
+  },
+});// tempoarary file storage
+
+const fs = require('fs'); // file system functions
+
+/**
+ * moves files from the temp location to the specified folder
+ * @param tempFile - current file info object
+ * @param newPath - String path to new folder location
+ */
+function moveFile(tempFile, newPath) {
+// append filename and original name to the path
+  newPath += tempFile.filename + ' - ' + tempFile.originalname;
+  fs.rename(tempFile.path, newPath, (err)=>{
+    // if there is a file system error just throw the error for now
+    if (err) throw err;
+    console.log('File Moved to ' + newPath);
+  });
+}
+
 // region PETS LOGIN PASSPORT
 
 /** *****
@@ -80,6 +110,7 @@ router.get('/view', (req, res, next)=>{
   const result = db.prepare(`SELECT * FROM pets WHERE license = ?`)
       .get(req.query.license || '00000000');
 
+
   res.render('pets-view', {
     title: 'GET - Pets View',
     pet: result,
@@ -96,12 +127,26 @@ router.get('/view', (req, res, next)=>{
  * GET ADD
 
  */
+router.get('/add', function(req, res, next) {
+  res.render('pets-add', {
+    title: 'GET - Add-a-Pet',
+  });
+});
 // TODO: add the GET handler as per the instructions on index.hbs
 
 
 /** **************************
  * POST ADD
   */
+router.post('/add', upload.fields([{name: 'petimage', maxCount: 1}]), (req, res, next) => {
+  res.render('pets-add', {
+    title: 'POST - Add-a-Pet',
+    submittedPetName: req.body.petname,
+    submittedPetType: req.body.pettype,
+    submittedOwnerName: req.body.ownername,
+    submittedLicense: req.body.license,
+  });
+});
 // TODO:  : add the POST handler as per the instructions on index.hbs
 
 // endregion

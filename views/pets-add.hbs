@@ -1,5 +1,28 @@
-<form action="{{action}}" method="post" class="bg-secondary">
+<form action="{{action}}" method="post" class="bg-secondary" enctype="multipart/form-data">
     <h1>{{ title }}</h1>
+    <div class="form-group">
+        <label for="license">License Number:</label>
+        <input type="text" class="form-control" for="license" name="license" required>
+    </div>
+    <div>
+    <label for="petname">Pet Name:</label>
+    <input type="text" class="form-control" for="petname" name="petname" required>
+    </div>
+        <div>
+    <label for="pettype">Pet Type:</label>
+    <input type="text" class="form-control" for="pettype" name="pettype" required>
+        </div>
+    <div>
+    <label for="petimage">Pet Image:</label>
+    <input type="file" class="form-control" for="petimage" name="petimage">
+    </div>
+    <div>
+    <label for="ownername ">Owner Name:</label>
+    <input type="text" class="form-control" for="ownername " name="ownername" required>
+    </div>
+    <div>
+        <input type="submit">
+    </div>
 
 <!--TODO: add form inputs for adding a pet-->
 

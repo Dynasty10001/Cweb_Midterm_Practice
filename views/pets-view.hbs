@@ -3,14 +3,40 @@
 <!--display the pet information-->
 </div>
 
-<h2 class="text-danger">{{#if }}{{log "here"}}{{this}}{{else}}Pet Not Found Dipshit{{/if}}</h2>
+<div>
+    {{#if pet}}
+        <h2 class="text-bg-success">Pet# {{pet.license}}</h2>
+        <div>
+            <p>Pet Name: {{pet.petname}}</p>
+        </div>
+        <div>
+            <p>Owner Name: {{pet.ownername}}</p>
+        </div>
+        <div>
+            <p>Pet Type: {{pet.pettype}}</p>
+        </div>
+        <div>
+            <img src="/images/{{pet.petimage}}"/>
+        </div>
+    {{else}}
+        <h2 class="text-danger">Pet Not Found</h2>
+    {{/if}}
+</div>
+
 
 <div class="bg-gradient card p-2">
     <h2> Recently Added Pets</h2>
     <!-- Display the pet names from the session in a link to this page that sends the 'licence' in the query string  -->
+    {{#each licenseArray}}
+        <div>
+            <p><a href="/pets/view?license={{this.license}}"{{this.name}}</p>
+        </div>
+    {{/each}}
+
 </div>
 <!--you can delete the div below-->
 <div class="card p-2 mt-2 bg-dark">
+    <h2>Pets View</h2>
     <h2>Pets View</h2>
     <h3>In pets-view.hbs: </h3>
     <ol>
@@ -25,3 +51,55 @@
             <br/>- clicking the pet name will display the pet's information</li>
     </ol>
 </div>
+<script>
+    window.onload = function(){
+        let license="{{pet.license}}";
+        createCookie("license", license);
+
+    let delimiter = "---";
+
+    function createCookie(name, value, days, path, domain, secure) {
+
+        cookieString= name + "=" + value + "+";
+        document.cookie=cookieString;
+
+    }
+
+    function getCookie(name) {
+
+        let nameEquals = name + "=";
+        let whole_cookie=document.cookie.split(nameEquals)[1].split("+")[0]; // get only the value of the cookie we need
+                                                                             // (split by the name=, take everything after the name= and then split it by ";" and take everything before the ";")
+        let crumbs=whole_cookie.split(delimiter); // split now our cookie in its information parts
+        /*for (let i = 0; i<crumbs.length; i++) {
+            let crumb = crumbs [i];
+            if (crumb.indexOf(nameEquals) == 0) {
+
+            return unescape (crumb.substring(nameEquals.length, crumb.length));
+            }
+        }*/ // sorry... i dont understand what this does ;) but it works without it
+        return crumbs; // return the information parts as an array
+    }
+
+    function deleteCookie(name){
+        createCookie(name, "", -1);
+    }
+
+    // ---------------------
+    // DEBUGGING PART STARTS
+    // ---------------------
+
+        let licenseArray=getCookie("license");
+
+        for (let i = 0; i < licenseArray.length; i++)
+        {
+            license = license+delimiter+licenseArray[i];
+        }
+
+    createCookie("license", license);
+
+    // ---------------------
+    // DEBUGGING PART ENDS
+    // ---------------------
+    }
+</script>
