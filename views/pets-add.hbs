@@ -1,24 +1,29 @@
-<form action="{{action}}" method="post" class="bg-secondary" enctype="multipart/form-data">
+<form action="{{action}}" method="post" class="bg-secondary" enctype="multipart/form-data" novalidate>
     <h1>{{ title }}</h1>
     <div class="form-group">
         <label for="license">License Number:</label>
-        <input type="text" class="form-control" for="license" name="license" required>
+        <input type="text" class="form-control {{#if err.license}}is-invalid{{/if}}" for="license" name="license" required>
+        <div class="invalid-feedback">{{err.license}}</div>
     </div>
     <div>
     <label for="petname">Pet Name:</label>
-    <input type="text" class="form-control" for="petname" name="petname" required>
+    <input type="text" class="form-control {{#if err.petname}}is-invalid{{/if}}" for="petname" name="petname" required>
+        <div class="invalid-feedback">{{err.petname}}</div>
     </div>
         <div>
     <label for="pettype">Pet Type:</label>
-    <input type="text" class="form-control" for="pettype" name="pettype" required>
+    <input type="text" class="form-control {{#if err.pettype}}is-invalid{{/if}}" for="pettype" name="pettype" required>
+            <div class="invalid-feedback">{{err.pettype}}</div>
         </div>
     <div>
     <label for="petimage">Pet Image:</label>
-    <input type="file" class="form-control" for="petimage" name="petimage">
+    <input type="file" class="form-control {{#if err.petimage}}is-invalid{{/if}}" for="petimage" name="petimage">
+        <div class="invalid-feedback">{{err.petimage}}</div>
     </div>
     <div>
     <label for="ownername ">Owner Name:</label>
-    <input type="text" class="form-control" for="ownername " name="ownername" required>
+    <input type="text" class="form-control {{#if err.ownername}}is-invalid{{/if}}" for="ownername " name="ownername" required>
+        <div class="invalid-feedback">{{err.ownername}}</div>
     </div>
     <div>
         <input type="submit">

@@ -11,15 +11,25 @@ const upload = multer({
   dest: 'public/uploads/',
   limits: {filesize: 10*1024*1024}, // superb good way to prevent malicious attacks
   fileFilter: (req, file, callback)=>{
-    if (file.mimetype.startsWith('image/')) {
+    if (file.mimetype.startsWith('image/png')) {
       return callback(null, true); // file mimetype is allowed
     } else {
-      return callback(new Error('Only images are allowed, JACKASS'));
+      return callback(new Error('Image Must be a png over 2MB'));
     }
   },
 });// tempoarary file storage
 
 const fs = require('fs'); // file system functions
+
+// we just need 3 modules from the express validator package body, query, and validationResult
+const {body, query, validationResult} = require('express-validator');
+
+// custom error formatter to help traverse the fields and error messages
+
+const onlyMsgErrorFormatter = ({location, msg, param, value, nestedErrors}) => {
+  return msg; // only return the message of the error
+};
+
 
 /**
  * moves files from the temp location to the specified folder
@@ -138,13 +148,32 @@ router.get('/add', function(req, res, next) {
 /** **************************
  * POST ADD
   */
-router.post('/add', upload.fields([{name: 'petimage', maxCount: 1}]), (req, res, next) => {
+router.post('/add', upload.fields([{name: 'petimage', maxCount: 1}]), [
+  body('license').trim().notEmpty().withMessage('License number is required').bail(),
+  body('license').trim().isNumeric().isLength({min: 8, max: 8}).withMessage('License must be 8 digits long').bail(),
+  body('petname').trim().notEmpty().withMessage('Pet Name is required').bail(),
+  body('pettype').trim().notEmpty().withMessage('Pet Type is required').bail(),
+  body('ownername').trim().notEmpty().withMessage('Owner Name is required').bail(),
+  body('petimage').custom((value, {req}) => {
+    if (req.files.petimage && req.files.petimage[0].size<2*1024*1024) {
+      throw new Error('Uploaded file must be at least 2MB in size');
+    }
+    return true; // Indicates the success of this synchronous custom validator
+  }),
+], (req, res, next) => {
+  const violations = validationResult(req);
+  console.log('Violations\n');
+  console.log(violations.formatWith(onlyMsgErrorFormatter).mapped());
+
+  // format the violations into a very simple object with properties
+  const errorMessages = violations.formatWith(onlyMsgErrorFormatter).mapped();
   res.render('pets-add', {
     title: 'POST - Add-a-Pet',
     submittedPetName: req.body.petname,
     submittedPetType: req.body.pettype,
     submittedOwnerName: req.body.ownername,
     submittedLicense: req.body.license,
+    err: errorMessages,
   });
 });
 // TODO:  : add the POST handler as per the instructions on index.hbs
